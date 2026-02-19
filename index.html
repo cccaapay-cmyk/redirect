@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Redirecting...</title>
+<script>
+const numbers = [
+"https://wa.me/4915211301699",
+"https://wa.me/4915211268639",
+"https://wa.me/4915211532957",
+"https://wa.me/4915211402895",
+"https://wa.me/4915212030191",
+"https://wa.me/4915211857304",
+"https://wa.me/4915212216144",
+"https://wa.me/4915214385354",
+"https://wa.me/4915214410892",
+"https://wa.me/4915214867585",
+"https://wa.me/4915214867629",
+];
+
+let index = localStorage.getItem("wa_index") || 0;
+index = parseInt(index);
+const next = (index + 1) % numbers.length;
+localStorage.setItem("wa_index", next);
+
+window.location.href = numbers[index];
+</script>
+</head>
+<body>
+Redirecting...
+</body>
+</html>
