@@ -3,22 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <title>Redirecting...</title>
+
+  <!-- 防止缓存 -->
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
+
   <script>
     const numbers = [
-      "https://wa.me/4917625481228",
-      // 这里继续放你的其他 wa.me ...
+      "https://wa.me/4915211301699",
+      "https://wa.me/4915211268639",
+      "https://wa.me/4915211532957",
+      "https://wa.me/4915211402895",
+      "https://wa.me/4915212030191",
+      "https://wa.me/4915211857304",
+      "https://wa.me/4915212216144",
+      "https://wa.me/4915214385354",
+      "https://wa.me/4915214410892",
+      "https://wa.me/4915214867585",
+      "https://wa.me/4915214867629"
     ];
 
-    // 真随机：每次打开都随机选一个
-    const i = Math.floor(Math.random() * numbers.length);
+    // 真随机
+    const randomIndex = Math.floor(Math.random() * numbers.length);
 
-    // 可选：加一个随机参数，避免某些环境缓存跳转结果
-    const url = numbers[i] + (numbers[i].includes("?") ? "&" : "?") + "src=gh&r=" + Date.now();
+    // 加时间戳防缓存
+    const finalUrl = numbers[randomIndex] + "?r=" + Date.now();
 
-    window.location.replace(url);
+    // 直接跳转
+    window.location.replace(finalUrl);
   </script>
 </head>
 <body>
