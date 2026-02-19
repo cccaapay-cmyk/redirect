@@ -15,15 +15,15 @@ const numbers = [
 "https://wa.me/4915214385354",
 "https://wa.me/4915214410892",
 "https://wa.me/4915214867585",
-"https://wa.me/4915214867629",
+"https://wa.me/4915214867629"
 ];
 
-let index = localStorage.getItem("wa_index") || 0;
-index = parseInt(index);
-const next = (index + 1) % numbers.length;
-localStorage.setItem("wa_index", next);
+// 真随机
+const randomIndex = Math.floor(Math.random() * numbers.length);
 
-window.location.href = numbers[index];
+// 跳转
+window.location.href = numbers[randomIndex];
+
 </script>
 </head>
 <body>
