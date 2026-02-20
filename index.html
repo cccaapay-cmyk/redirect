@@ -1,24 +1,44 @@
 <!doctype html>
-<html>
+<html lang="de">
 <head>
-<meta charset="utf-8">
-<script>
-const numbers = [
-"https://wa.me/4915211301699",
-"https://wa.me/4915211268639",
-"https://wa.me/4915211532957",
-"https://wa.me/4915211402895",
-"https://wa.me/4915212030191",
-"https://wa.me/4915211857304",
-"https://wa.me/4915212216144",
-"https://wa.me/4915214385354",
-"https://wa.me/4915214410892",
-"https://wa.me/491783826797"
-];
-
-const randomIndex = Math.floor(Math.random() * numbers.length);
-window.location.href = numbers[randomIndex];
-</script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weiterleitung…</title>
 </head>
-<body></body>
+<body>
+  <p>Bitte einen Moment… Sie werden weitergeleitet.</p>
+
+  <script>
+  var links = [
+    "https://wa.me/4915211301699",
+    "https://wa.me/4915211268639",
+    "https://wa.me/4915211532957",
+    "https://wa.me/4915211402895",
+    "https://wa.me/4915212030191",
+    "https://wa.me/4915211857304",
+    "https://wa.me/4915212216144",
+    "https://wa.me/4915214385354",
+    "https://wa.me/4915214410892",
+    "https://wa.me/4915214867585",
+    "https://wa.me/4915214867629",
+    "https://wa.me/491783826797"
+  ];
+
+  var key = "assignedWhatsApp_v1";
+  var saved = localStorage.getItem(key);
+
+  function go(url){
+    setTimeout(function(){ window.location.href = url; }, 600);
+  }
+
+  if (saved && links.indexOf(saved) !== -1) {
+    go(saved);
+  } else {
+    var idx = Math.floor(Math.random() * links.length);
+    var selected = links[idx];
+    localStorage.setItem(key, selected);
+    go(selected);
+  }
+  </script>
+</body>
 </html>
