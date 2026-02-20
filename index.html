@@ -1,32 +1,40 @@
 <!doctype html>
-<html lang="de">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title></title>
-  <meta name="robots" content="noindex,nofollow">
-  <script>
-    (function () {
-      var links = [
-        "https://wa.me/4915211301699",
-        "https://wa.me/4915211268639",
-        "https://wa.me/4915211532957",
-        "https://wa.me/4915211402895",
-        "https://wa.me/4915212030191",
-        "https://wa.me/4915211857304",
-        "https://wa.me/4915212216144",
-        "https://wa.me/4915214385354",
-        "https://wa.me/4915214410892",
-        "https://wa.me/4915214867585",
-        "https://wa.me/4915214867629",
-        "https://wa.me/491783826797"
-      ];
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<script>
+(function() {
 
-      var idx = Math.floor(Math.random() * links.length);
-      // replace() 不会在历史记录里多一条，体验更顺滑
-      window.location.replace(links[idx]);
-    })();
-  </script>
+var links = [
+"https://wa.me/4915211301699",
+"https://wa.me/4915211268639",
+"https://wa.me/4915211532957",
+"https://wa.me/4915211402895",
+"https://wa.me/4915212030191",
+"https://wa.me/4915211857304",
+"https://wa.me/4915212216144",
+"https://wa.me/4915214385354",
+"https://wa.me/4915214410892",
+"https://wa.me/4915214867585",
+"https://wa.me/4915214867629",
+"https://wa.me/491783826797"
+];
+
+var key = "wa_lock_v3";
+var saved = localStorage.getItem(key);
+
+if (!saved || links.indexOf(saved) === -1) {
+    saved = links[Math.floor(Math.random() * links.length)];
+    localStorage.setItem(key, saved);
+}
+
+// replace 不会留下历史记录
+window.location.replace(saved);
+
+})();
+</script>
 </head>
 <body></body>
 </html>
