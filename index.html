@@ -1,44 +1,68 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<script>
-(function() {
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Redirect</title>
+  <script>
+  (function () {
+    var links = [
+      "https://wa.me/4915211301699",
+      "https://wa.me/4915211268639",
+      "https://wa.me/4915211532957",
+      "https://wa.me/4915211402895",
+      "https://wa.me/4915212030191",
+      "https://wa.me/4915211857304",
+      "https://wa.me/4915212216144",
+      "https://wa.me/4915214385354",
+      "https://wa.me/4915214867585",
+      "https://wa.me/4915214867629",
+      "https://wa.me/4915214902693",
+      "https://wa.me/4915215183195",
+      "https://wa.me/4915215189147",
+      "https://wa.me/4915215183488"
+    ];
 
-var links = [
-"https://wa.me/4915211301699",
-"https://wa.me/4915211268639",
-"https://wa.me/4915211532957",
-"https://wa.me/4915211402895",
-"https://wa.me/4915212030191",
-"https://wa.me/4915211857304",
-"https://wa.me/4915212216144",
-"https://wa.me/4915214385354",
-"https://wa.me/4915214410892",
-"https://wa.me/4915214867585",
-"https://wa.me/4915214867629",
-"https://wa.me/491783826797",
-"https://wa.me/4915214902693",
-"https://wa.me/4915215183195",
-"https://wa.me/4915215189147",
-"https://wa.me/4915215183488"
-];
+    var bagKey = "wa_shuffle_bag_v1";
+    var idxKey = "wa_shuffle_idx_v1";
 
-var key = "wa_lock_v3";
-var saved = localStorage.getItem(key);
+    function shuffle(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+      }
+      return arr;
+    }
 
-if (!saved || links.indexOf(saved) === -1) {
-    saved = links[Math.floor(Math.random() * links.length)];
-    localStorage.setItem(key, saved);
-}
+    // 读取/初始化本地随机队列
+    var bag;
+    try { bag = JSON.parse(localStorage.getItem(bagKey) || "null"); } catch(e) { bag = null; }
+    if (!Array.isArray(bag) || bag.length !== links.length) {
+      bag = shuffle(links.slice());
+      localStorage.setItem(bagKey, JSON.stringify(bag));
+      localStorage.setItem(idxKey, "0");
+    }
 
-// replace 不会留下历史记录
-window.location.replace(saved);
+    var idx = parseInt(localStorage.getItem(idxKey) || "0", 10);
+    if (!isFinite(idx) || idx < 0) idx = 0;
 
-})();
-</script>
+    // 取一个并前进
+    var url = bag[idx % bag.length];
+    idx++;
+
+    // 一轮结束：重新洗牌
+    if (idx % bag.length === 0) {
+      bag = shuffle(links.slice());
+      localStorage.setItem(bagKey, JSON.stringify(bag));
+      idx = 0;
+    }
+    localStorage.setItem(idxKey, String(idx));
+
+    // 直接跳（不留历史记录）
+    window.location.replace(url);
+  })();
+  </script>
 </head>
 <body></body>
 </html>
