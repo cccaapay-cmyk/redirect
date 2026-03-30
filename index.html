@@ -1,57 +1,131 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="robots" content="noindex,nofollow" />
-  <title>Redirect</title>
-  <script>
-  (function () {
-    var links = [
-      "https://t.me/Elaine_168888"
-    ];
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
 
-    var bagKey = "tg_shuffle_bag_v1";
-    var idxKey = "tg_shuffle_idx_v1";
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  display: none;
+}
+</style>
 
-    function shuffle(arr) {
-      for (var i = arr.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+<script>
+(() => {
+  const rawUsers = [
+    "Elaine_168888"
+  ];
+
+  const KEY_BAG = "tg_shuffle_bag_page4";
+  const KEY_LAST = "tg_last_pick_page4";
+
+  function sanitizeUsers(list) {
+    const seen = new Set();
+    const cleaned = [];
+
+    for (let i = 0; i < list.length; i++) {
+      const v = String(list[i]).trim().replace(/^@+/, "");
+      if (/^[A-Za-z0-9_]{5,32}$/.test(v) && !seen.has(v)) {
+        seen.add(v);
+        cleaned.push(v);
       }
-      return arr;
     }
 
-    var bag;
+    return cleaned;
+  }
+
+  const users = sanitizeUsers(rawUsers);
+
+  function shuffle(arr) {
+    const copy = arr.slice();
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = (Math.random() * (i + 1)) | 0;
+      const t = copy[i];
+      copy[i] = copy[j];
+      copy[j] = t;
+    }
+    return copy;
+  }
+
+  function loadBag() {
     try {
-      bag = JSON.parse(localStorage.getItem(bagKey) || "null");
-    } catch(e) {
-      bag = null;
+      const raw = localStorage.getItem(KEY_BAG);
+      if (!raw) return null;
+
+      const bag = JSON.parse(raw);
+      if (!Array.isArray(bag) || bag.length === 0) return null;
+
+      const valid = [];
+      for (let i = 0; i < bag.length; i++) {
+        if (users.indexOf(bag[i]) !== -1) valid.push(bag[i]);
+      }
+
+      return valid.length ? valid : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function saveBag(bag) {
+    try {
+      localStorage.setItem(KEY_BAG, JSON.stringify(bag));
+    } catch {}
+  }
+
+  function getLastPick() {
+    try {
+      return localStorage.getItem(KEY_LAST) || "";
+    } catch {
+      return "";
+    }
+  }
+
+  function setLastPick(value) {
+    try {
+      localStorage.setItem(KEY_LAST, value);
+    } catch {}
+  }
+
+  function pickUser() {
+    if (!users.length) return "";
+
+    let bag = loadBag();
+    const lastPick = getLastPick();
+
+    if (!bag || bag.length === 0) {
+      bag = shuffle(users);
+
+      if (bag.length > 1 && bag[0] === lastPick) {
+        const t = bag[0];
+        bag[0] = bag[1];
+        bag[1] = t;
+      }
     }
 
-    if (!Array.isArray(bag) || bag.length !== links.length) {
-      bag = shuffle(links.slice());
-      localStorage.setItem(bagKey, JSON.stringify(bag));
-      localStorage.setItem(idxKey, "0");
-    }
+    const pick = bag[0];
+    saveBag(bag.slice(1));
+    setLastPick(pick);
 
-    var idx = parseInt(localStorage.getItem(idxKey) || "0", 10);
-    if (!isFinite(idx) || idx < 0) idx = 0;
+    return pick;
+  }
 
-    var url = bag[idx % bag.length];
-    idx++;
+  const username = pickUser();
 
-    if (idx % bag.length === 0) {
-      bag = shuffle(links.slice());
-      localStorage.setItem(bagKey, JSON.stringify(bag));
-      idx = 0;
-    }
+  if (username) {
+    location.replace("https://t.me/" + username);
+  } else {
+    window.addEventListener("DOMContentLoaded", function () {
+      document.body.style.display = "block";
+      document.body.textContent = "No valid Telegram username found.";
+    });
+  }
+})();
+</script>
 
-    localStorage.setItem(idxKey, String(idx));
-
-    window.location.replace(url);
-  })();
-  </script>
 </head>
 <body></body>
 </html>
